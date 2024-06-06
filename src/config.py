@@ -1,7 +1,13 @@
-class CFG:
-    DATA_ROOT = "../data/"
-    MODEL_ROOT = "../models/"
-    TRAIN_PATH = DATA_ROOT + "train.csv"
-    TEST_PATH = DATA_ROOT + "test.csv"
+from pathlib import Path
 
-    debug = True
+
+class config:
+    DATA_ROOT = Path("../data")
+    MODEL_ROOT = Path("../models")
+    TRAIN_PATH = DATA_ROOT / "train.csv"
+    TEST_PATH = DATA_ROOT / "test.csv"
+
+    CONFIG_DIR = Path("../config")
+
+    DEBUG = True
+    ENABLE_NEPTUNE = False
