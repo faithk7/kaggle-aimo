@@ -28,13 +28,13 @@ def finetune(model, dataset_dict, output_dir: str):
 
 
 def main():
-    print("here we go")
     tokenizer, model = initialize_model(config.MODEL, cache_dir=config.CACHE_DIR)
     model = apply_lora(model)
 
     dataset_dict = load_data(config.TRAIN_PATH, tokenizer)
 
     finetune(model, dataset_dict, output_dir=config.MODEL_ROOT)
+
 
 if __name__ == "__main__":
     main()
