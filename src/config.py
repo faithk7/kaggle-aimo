@@ -1,7 +1,7 @@
 from pathlib import Path
 
 
-class CONFIG:
+class config:
     # == general ==
     DEBUG = True
     ENABLE_NEPTUNE = False
