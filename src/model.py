@@ -17,3 +17,7 @@ def apply_lora(model):
     )
     model = get_peft_model(model, lora_config)
     return model
+
+
+def load_model():
+    pass

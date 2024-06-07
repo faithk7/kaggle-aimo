@@ -24,3 +24,4 @@ class CONFIG:
     WEIGHT_DECAY = 0.01
     LOGGING_DIR = Path("./logs")
     LOGGING_STEPS = 10
+    MODEL = "deepseek-ai/deepseek-math-7b-base"

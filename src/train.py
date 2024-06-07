@@ -28,7 +28,7 @@ def finetune(model, dataset_dict, output_dir: str):
 
 
 def main():
-    model, tokenizer = initialize_model("gpt2", cache_dir=config.CACHE_DIR)
+    model, tokenizer = initialize_model(config.MODEL, cache_dir=config.CACHE_DIR)
     model = apply_lora(model)
 
     dataset_dict = load_data(config.TRAIN_PATH, tokenizer)
