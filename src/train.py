@@ -1,12 +1,36 @@
-# finetune
+from transformers import Trainer, TrainingArguments
+
+from config import config
+from dataset import load_data
+from model import apply_lora, initialize_model
 
 
-# main
+def finetune(model, dataset_dict, output_dir: str):
+    training_args = TrainingArguments(
+        output_dir=output_dir,
+        num_train_epochs=config.NUM_TRAIN_EPOCHS,
+        per_device_train_batch_size=config.PER_DEVICE_TRAIN_BATCH_SIZE,
+        per_device_eval_batch_size=config.PER_DEVICE_EVAL_BATCH_SIZE,
+        warmup_steps=config.WARMUP_STEPS,
+        weight_decay=config.WEIGHT_DECAY,
+        logging_dir=config.LOGGING_DIR,
+        logging_steps=config.LOGGING_STEPS,
+    )
 
-## initialize the model, making sure to cache it
+    trainer = Trainer(
+        model=model,
+        args=training_args,
+        train_dataset=dataset_dict["train"],
+        eval_dataset=dataset_dict["validation"],
+    )
 
-## load the quantization config
+    trainer.train()
 
-## load the data
 
-## start the finetunning
+def main():
+    model, tokenizer = initialize_model("gpt2", cache_dir=config.CACHE_DIR)
+    model = apply_lora(model)
+
+    dataset_dict = load_data(config.TRAIN_PATH, tokenizer)
+
+    finetune(model, dataset_dict, output_dir=config.MODEL_ROOT)

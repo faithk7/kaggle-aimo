@@ -19,27 +19,14 @@ def time_it(func):
     return wrapper
 
 
-# TODO: combine the below two functions into one
-def load_config_from_yaml(yaml_relative_path: str) -> None:
-    yaml_path = config.CONFIG_DIR / yaml_relative_path
+def load_config(config_filename: str) -> None:
+    config_path = config.CONFIG_DIR / config_filename
 
-    with open(yaml_path, "r") as file:
+    with open(config_path, "r") as file:
         yaml_config = yaml.safe_load(file)
 
     for key, value in yaml_config.items():
-        if hasattr(config, key):
-            setattr(config, key, value)
-        else:
-            raise ValueError(f"Invalid config key: {key} when loading from yaml")
-
-
-def load_config_from_args(args: argparse.Namespace) -> None:
-    for arg in vars(args):
-        value = getattr(args, arg)
-        if value is not None:
-            setattr(config, arg, value)
-        else:
-            raise ValueError(f"Invalid config key: {arg} when loading from args")
+        setattr(config, key, value)
 
 
 def parse_args():
