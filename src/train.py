@@ -1,11 +1,11 @@
-from transformers import Trainer, TrainingArguments
+from transformers import DataCollatorForLanguageModeling, Trainer, TrainingArguments
 
 from config import config
 from dataset import load_data
 from model import apply_lora, initialize_model
 
 
-def finetune(model, dataset_dict, output_dir: str):
+def finetune(model, tokenizer, dataset_dict, output_dir: str):
     training_args = TrainingArguments(
         output_dir=output_dir,
         num_train_epochs=config.NUM_TRAIN_EPOCHS,
@@ -15,13 +15,17 @@ def finetune(model, dataset_dict, output_dir: str):
         weight_decay=config.WEIGHT_DECAY,
         logging_dir=config.LOGGING_DIR,
         logging_steps=config.LOGGING_STEPS,
+        report_to="none",
     )
+
+    data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
     trainer = Trainer(
         model=model,
         args=training_args,
         train_dataset=dataset_dict["train"],
         eval_dataset=dataset_dict["validation"],
+        data_collator=data_collator,
     )
 
     trainer.train()
@@ -33,7 +37,7 @@ def main():
 
     dataset_dict = load_data(config.TRAIN_PATH, tokenizer)
 
-    finetune(model, dataset_dict, output_dir=config.MODEL_ROOT)
+    finetune(model, tokenizer, dataset_dict, output_dir=config.MODEL_ROOT)
 
 
 if __name__ == "__main__":

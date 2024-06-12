@@ -28,6 +28,10 @@ def load_data(
             max_length=config.MAX_LENGTH,
         )
         tokenized_inputs["labels"] = examples["answer"]
+        print(len(tokenized_inputs["input_ids"]))
+        print(len(tokenized_inputs["labels"]))
+
+        assert len(tokenized_inputs["input_ids"]) == len(tokenized_inputs["labels"])
         return tokenized_inputs
 
     train_dataset = train_dataset.map(preprocess_fn, batched=True)
